@@ -1,28 +1,33 @@
 var knex = require("../database/connection");
-var User = require("./User")
+var User = require("./User");
 
 class PasswordToken {
-    async create(email){
-        var user = await User.findByEmail(email);
-        console.log(user);
-        if(user != undefined){
-            try{
-                var token = Date.now();
-                await knex.insert({
-                    user_id: user.id,
-                    used: 0,
-                    token: token // UUID
-                }).table("passwordtokens");
+  async create(email) {
+    var user = await User.findByEmail(email);
+    console.log(user);
+    if (user != undefined) {
+      try {
+        var token = Date.now();
+        await knex
+          .insert({
+            user_id: user.id,
+            used: 0,
+            token: token, // UUID
+          })
+          .table("passwordtokens");
 
-                return {status: true,token: token}
-            }catch(err){
-                console.log(err);
-                return {status: false, err: err}
-            }
-        }else{
-            return {status: false, err: "O e-mail passado não existe no banco de dados!"}
-        }
+        return { status: true, token: token };
+      } catch (err) {
+        console.log(err);
+        return { status: false, err: err };
+      }
+    } else {
+      return {
+        status: false,
+        err: "O e-mail passado não existe no banco de dados!",
+      };
     }
+  }
 
   async validate(token) {
     try {
@@ -35,17 +40,24 @@ class PasswordToken {
         var tk = result[0];
 
         if (tk.used) {
-          return {status: false};
+          return { status: false };
         } else {
-          return {status: true, token: tk};
+          return { status: true, token: tk };
         }
       } else {
-        return {status: false};
+        return { status: false };
       }
     } catch (error) {
       console.log(error);
-      return {status: false};
+      return { status: false };
     }
+  }
+
+  async setUsed(token) {
+    await knex
+      .update({ used: 1 })
+      .where({ token: token })
+      .table("passwordtokens");
   }
 }
 
