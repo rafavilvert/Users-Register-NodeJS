@@ -14,7 +14,7 @@ This project was developed with Node js.<br>
 
 ## Project: 
 
-This is a Rest API based on Spring Boot with postgresql connection.
+This is a Rest API based on Node with postgresql connection.
 
 ## Require:
 
@@ -27,7 +27,13 @@ This is a Rest API based on Spring Boot with postgresql connection.
 
 * After clone go into the project directory, open it with your favorite IDE and run.
 * Run yarn command to install the necessary dependencies.
+```
+yarn 
+```
 * Install postgre SQL and create database 'api_users'.
+```
+CREATE DATABASE api_users; 
+```
 
 ### Next improvements:
 
