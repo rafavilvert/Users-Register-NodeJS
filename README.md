@@ -34,6 +34,16 @@ yarn
 ```
 CREATE DATABASE api_users; 
 ```
+```
+CREATE TABLE users (id SERIAL PRIMARY KEY, name varchar(60) NOT NULL, email varchar(150) NOT NULL UNIQUE, password varchar(255) NOT NULL, role INT );
+```
+```
+CREATE TABLE passwordtokens (passwordtokens_id SERIAL PRIMARY KEY, token VARCHAR(255) NOT NULL, used INT NOT NULL ,   user_id INT NOT NULL, CONSTRAINT fk_user
+      FOREIGN KEY(user_id) 
+	  REFERENCES users(id)
+	  ON DELETE CASCADE
+	  ON UPDATE CASCADE );
+```
 
 ### Next improvements:
 
